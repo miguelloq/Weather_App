@@ -2,21 +2,22 @@ import 'i_local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService implements ILocalStorage {
-  final SharedPreferences prefs;
-  SharedPreferencesService(this.prefs);
 
   @override
-  String getString(String key){
+  Future<String> getString(String key) async{
+    var prefs= await SharedPreferences.getInstance();
     return prefs.getString(key) ?? '';
   }
 
   @override
-  void setString(String key, String input) async {
+  Future<void> setString(String key, String input) async {
+    var prefs= await SharedPreferences.getInstance();
     await prefs.setString(key, input);
   }
 
   @override
-  void remove(String key) async{
-    await prefs.remove(key);
+  Future<void> remove(String key) async{
+    var prefs= await SharedPreferences.getInstance();
+    await prefs.remove(key); 
   }
 }

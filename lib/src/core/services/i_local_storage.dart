@@ -1,5 +1,5 @@
 abstract interface class ILocalStorage{
-  String getString(String key);
-  void setString(String key, String input);
-  void remove(String key);
+  Future<String> getString(String key);
+  Future<void> setString(String key, String input);
+  Future<void> remove(String key);
 }

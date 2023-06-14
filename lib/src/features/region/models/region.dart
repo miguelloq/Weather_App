@@ -14,15 +14,8 @@ class Region {
       required this.latitude,
       required this.longitude});
 
-  Region.fromMap(Map<String, dynamic> map)
-      : city = map['name'].toString(),
-        state = map['state'].toString(),
-        country = map['country'].toString(),
-        latitude = map['lat'].toString(),
-        longitude = map['lon'].toString();
-
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'city': city,
       'state': state,
       'country': country,
@@ -31,7 +24,24 @@ class Region {
     };
   }
 
+  Region.fromMap(Map<String, dynamic> map)
+      : city = map['city'].toString(),
+        state = map['state'].toString(),
+        country = map['country'].toString(),
+        latitude = map['latitude'].toString(),
+        longitude = map['longitude'].toString();
+
+  Region.fromJsonOpenWeather(Map<String, dynamic> map)
+      : city = map['name'].toString(),
+        state = map['state'].toString(),
+        country = map['country'].toString(),
+        latitude = map['lat'].toString(),
+        longitude = map['lon'].toString();
+
   String toJson() => json.encode(toMap());
+
+  factory Region.fromJson(String source) =>
+      Region.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

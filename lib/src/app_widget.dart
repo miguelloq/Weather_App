@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/src/core/services/i_local_storage.dart';
+import 'package:weather_app/src/core/services/shared_preferences_service.dart';
+
 import 'package:weather_app/src/features/region/region_controller.dart';
 import 'package:weather_app/src/core/services/http_service.dart';
 import 'package:weather_app/src/themes/my_theme.dart';
@@ -13,8 +16,11 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (context) => HttpService()),
+        Provider<ILocalStorage>(
+          create: (context) => SharedPreferencesService(),
+        ),
         ChangeNotifierProvider(
-          create: (context) => RegionController(context.read()),
+          create: (context) => RegionController(context.read(),context.read()),
         ),
       ],
       child: MaterialApp(
