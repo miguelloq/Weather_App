@@ -8,6 +8,8 @@ import 'package:weather_app/src/themes/my_theme.dart';
 import 'package:weather_app/src/features/weather/weather_page.dart';
 import 'package:provider/provider.dart';
 
+import 'features/weather/weather_controller.dart';
+
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
 
@@ -21,6 +23,9 @@ class AppWidget extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => RegionController(context.read(),context.read()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WeatherController(context.read(),context.read()),
         ),
       ],
       child: MaterialApp(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/core/services/i_local_storage.dart';
-//import 'package:weather_app/src/core/services/shared_preferences_service.dart';
 
 import '../../core/services/api_key.dart';
 import '../../core/services/http_service.dart';

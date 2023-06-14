@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/src/features/region/region_controller.dart';
+import 'package:weather_app/src/features/weather/weather_controller.dart';
 import '../../../themes/theme_colors.dart';
 import '../models/region.dart';
 
@@ -19,13 +20,15 @@ class RegionList extends StatelessWidget {
             child: Text(regions[index].country),
           ),
           onTap: () {
-            final controller = context.read<RegionController>();
-            controller.chooseCity(index);
+            final controllerRegion = context.read<RegionController>();
+            final controllerWeather= context.read<WeatherController>();
+            controllerRegion.chooseCity(index);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('City selected'),
               ),
             );
+            controllerWeather.getWeatherFromStorageRegion();
           },
           title: Text(
             regions[index].city,

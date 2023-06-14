@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../core/services/shared_preferences_service.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/src/features/weather/weather_controller.dart';
 import '../region/region_search.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -12,46 +11,54 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  String a = 'abc';
+  late final WeatherController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = context.read<WeatherController>(); //watch para testar esses text e elevated button
+    controller.initCurrentWeather();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Weather App'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              showSearch(context: context, delegate: RegionSearch());
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
-        ],
-      ),
-      body: Center(
-          child: Column(
-        children: [
-          const Text('WeatherPage'),
-          ElevatedButton(
-            onPressed: () async {
-              final storage = SharedPreferencesService(
-                  await SharedPreferences.getInstance());
-              setState(() {
-                a = storage.getString('currentRegion');
-              });
-            },
-            child: Text(a),
-          ),
-          ElevatedButton(
+        appBar: AppBar(
+          title: const Text('Weather App'),
+          actions: [
+            IconButton(
               onPressed: () async {
-                final storage = SharedPreferencesService(
-                    await SharedPreferences.getInstance());
-                storage.remove('currentRegion');
+                showSearch(context: context, delegate: RegionSearch());
               },
-              child: const Text('z'))
-        ],
-      )),
-    );
+              icon: const Icon(
+                Icons.search,
+              ),
+            ),
+            IconButton(
+              onPressed: () => controller.refreshCurrentAndStorageWeather(),
+              icon: const Icon(Icons.refresh_rounded),
+            ),
+            IconButton(
+              onPressed: () => controller.logWeather(),
+              icon: const Icon(Icons.report_gmailerrorred),
+            ),
+            IconButton(
+              onPressed: () => controller.deleteStorage(),
+              icon: const Icon(Icons.delete_outline),
+            ),
+          ],
+        ),
+        body: Consumer<WeatherController>(
+          builder: (BuildContext context, WeatherController controllerConsumer,
+              Widget? widget) {
+            return Center(
+              child: Column(
+                children: [
+                  Text(controllerConsumer.currentWeather?.title ?? 'currentWeather null')
+                ],
+              ),
+            );
+          },
+        ));
   }
 }
