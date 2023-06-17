@@ -4,9 +4,11 @@ import 'package:weather_app/src/core/services/shared_preferences_service.dart';
 
 import 'package:weather_app/src/features/region/region_controller.dart';
 import 'package:weather_app/src/core/services/http_service.dart';
-import 'package:weather_app/src/themes/my_theme.dart';
+import 'package:weather_app/src/themes/black_theme.dart';
 import 'package:weather_app/src/features/weather/weather_page.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/src/themes/theme_model.dart';
+import 'package:weather_app/src/themes/white_theme.dart';
 
 import 'features/weather/weather_controller.dart';
 
@@ -22,21 +24,27 @@ class AppWidget extends StatelessWidget {
           create: (context) => SharedPreferencesService(),
         ),
         ChangeNotifierProvider(
-          create: (context) => RegionController(context.read(),context.read()),
+          create: (context) => RegionController(context.read(), context.read()),
         ),
         ChangeNotifierProvider(
-          create: (context) => WeatherController(context.read(),context.read()),
+          create: (context) =>
+              WeatherController(context.read(), context.read()),
         ),
+        ChangeNotifierProvider(create: (context) => ThemeModel()),
       ],
-      child: MaterialApp(
-        title: 'WeatherApp',
-        theme: myTheme,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/weather',
-        routes: {
-          '/weather': (_) => const WeatherPage(),
-        },
-      ),
+      child: Consumer<ThemeModel>(builder: (_, model, __) {
+        return MaterialApp(
+          title: 'WeatherApp',
+          theme:whiteTheme,              
+          darkTheme: blackTheme,
+          themeMode:model.mode,
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/weather',
+          routes: {
+            '/weather': (_) => const WeatherPage(),
+          },
+        );
+      }),
     );
   }
 }
