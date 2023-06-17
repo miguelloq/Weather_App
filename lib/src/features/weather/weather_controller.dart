@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '../../core/services/http_service.dart';
@@ -36,7 +34,7 @@ class WeatherController extends ChangeNotifier {
       if (storageSavedRegion == '') {
         state = WeatherDataState.noData;
       } else {
-        await updateCurrentWeatherFromStorageRegion( jsonString: storageSavedRegion);
+        currentWeather = await apiWeatherFromRegion(region: Region.fromJson(storageSavedRegion));
         await saveCurrentWeatherInStorage();
         state = WeatherDataState.fetchData;
       }
@@ -63,7 +61,8 @@ class WeatherController extends ChangeNotifier {
     notifyListeners();
     try {
       if (currentWeather != null) {
-        currentWeather = await apiWeatherFromRegion(region: currentWeather!.region);
+        currentWeather =
+            await apiWeatherFromRegion(region: currentWeather!.region);
         await saveCurrentWeatherInStorage();
         state = WeatherDataState.fetchData;
       } else {
@@ -76,29 +75,9 @@ class WeatherController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateCurrentWeatherFromStorageRegion(
-      {required jsonString}) async {
-    state = WeatherDataState.fetchData;
-    currentWeather =
-        await apiWeatherFromRegion(region: Region.fromJson(jsonString));
-  }
-
   Future<void> saveCurrentWeatherInStorage() async {
     if (currentWeather != null) {
       await storage.setString('storageWeather', currentWeather!.toJson());
     }
-  }
-
-  Future<void> deleteStorage() async {
-    await storage.remove('storageWeather');
-    await storage.remove('storageRegion');
-    log('deleteStorageWeather');
-  }
-
-  Future<void> logWeather() async {
-    log('state: ${state.name}');
-    log('currentWeather: $currentWeather');
-    log('localRegion: ${await storage.getString('storageRegion')}');
-    log('localWeather: ${await storage.getString('storageWeather')}');
   }
 }
