@@ -6,6 +6,7 @@ import 'package:weather_app/src/features/region/region_controller.dart';
 import 'models/region.dart';
 
 class RegionSearch extends SearchDelegate<String> {
+  
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -23,12 +24,10 @@ class RegionSearch extends SearchDelegate<String> {
     return [
       IconButton(
         onPressed: () {
-          _atualizeRegionList(context);
+          query = '';
         },
-        icon: const Icon(
-          Icons.manage_search_sharp,
-        ),
-      ),
+        icon: const Icon(Icons.close),
+      )
     ];
   }
 
@@ -39,7 +38,7 @@ class RegionSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    _atualizeRegionList(context);
+    _updateRegionList(context);
     return _buildRegionList(context);
   }
 
@@ -55,15 +54,9 @@ class RegionSearch extends SearchDelegate<String> {
     }
   }
 
-  void _atualizeRegionList(BuildContext context) {
+  void _updateRegionList(BuildContext context) {
     var controller = context.read<RegionController>();
-    if (query.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Write the name of the city'),
-        ),
-      );
-    } else {
+    if (query.isNotEmpty) {
       controller.getPossibleRegions(query);
     }
   }

@@ -19,7 +19,7 @@ class RegionList extends StatelessWidget {
             backgroundColor: ThemeColors.primaryColor,
             child: Text(regions[index].country),
           ),
-          onTap: () {
+          onTap: (){
             final controllerRegion = context.read<RegionController>();
             final controllerWeather= context.read<WeatherController>();
             controllerRegion.chooseCity(index);
@@ -33,7 +33,7 @@ class RegionList extends StatelessWidget {
           title: Text(
             regions[index].city,
           ),
-          subtitle: regions[index].state == 'null'
+          subtitle: regions[index].state == ''
               ? const Text("No state")
               : Text(regions[index].state),
         );

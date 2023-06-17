@@ -33,7 +33,7 @@ class Region {
 
   Region.fromJsonOpenWeather(Map<String, dynamic> map)
       : city = map['name'].toString(),
-        state = map['state'].toString(),
+        state = map['state']!=null ? map['state'].toString() : '',
         country = map['country'].toString(),
         latitude = map['lat'].toString(),
         longitude = map['lon'].toString();
