@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/services/http_service.dart';
 import '../../core/services/i_local_storage.dart';
+import '../../utils/keys.dart';
 import '../region/models/region.dart';
-import '../../core/services/api_key.dart';
 import 'models/weather.dart';
 
 enum WeatherDataState { noData, fetchData, error, loading }
@@ -21,7 +21,7 @@ class WeatherController extends ChangeNotifier {
     double latit = double.parse(region.latitude);
     double longi = double.parse(region.longitude);
     String url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latit&lon=$longi&appid=${ApiKey.myKey}&units=metric';
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latit&lon=$longi&appid=${Keys.openWeatherKey}&units=metric';
     final json = await client.get(url);
     return Weather.fromJsonOpenWeather(json: json, region: region);
   }
